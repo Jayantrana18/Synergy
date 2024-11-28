@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const AboutUs = () => {
   return (
@@ -31,9 +32,12 @@ const AboutUs = () => {
             tomorrow.
           </p>
           <div className="flex space-x-4">
-            <button className="px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
+            <Link
+              href="/aboutus"
+              className="px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105"
+            >
               Learn More
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -46,6 +46,12 @@ export function Header() {
           } md:flex`}
         >
           <Link
+            href="/"
+            className="text-lg font-medium text-gray-800 hover:text-blue-600 transition duration-300 ease-in-out"
+          >
+            Home
+          </Link>
+          <Link
             href="/aboutus"
             className="text-lg font-medium text-gray-800 hover:text-blue-600 transition duration-300 ease-in-out"
           >
@@ -132,6 +138,13 @@ export function Header() {
             </svg>
           </button>
 
+          <Link
+            href="/"
+            className="text-lg font-medium text-gray-800 hover:text-blue-600 py-4"
+            onClick={toggleMenu} // Close menu when clicked
+          >
+            Home
+          </Link>
           <Link
             href="/aboutus"
             className="text-lg font-medium text-gray-800 hover:text-blue-600 py-4"
