@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   // Sample patient data
   const patient = {
-    name: "User Details",
+    name: "User Details++",
     healthStats: {
       bloodPressure: "Calculating...",
     },
