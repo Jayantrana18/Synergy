@@ -1,206 +1,134 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import Image from "next/image";
+import { login, singup } from "../../firebase";
 
-const Hero = () => {
-  const [isSignUp, setIsSignUp] = useState(false); // Tracks whether the user is signing up or logging in
-  const [userType, setUserType] = useState<"Doctor" | "Patient" | "">(""); // Tracks user type for registration
-
-  // State for login form fields
+const Login = () => {
+  const [signState, setSignState] = useState("Sign In");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
 
-  const router = useRouter(); // Initialize router from next/router
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent the form from refreshing the page
-
-    // Validate login form fields
-    if (email.trim() && password.trim()) {
-      // Redirect to the dashboard if fields are valid
-      router.push("/dashboard"); // Use router.push for navigation
+  const user_auth = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    if (signState === "Sign In") {
+      await login(email, password);
     } else {
-      alert("Please fill in all fields to log in!");
+      await singup(name, email, password);
     }
+    setLoading(false);
   };
 
   return (
     <div
-      className="relative h-screen bg-cover bg-center"
+      className="relative min-h-screen bg-cover bg-center"
       style={{ backgroundImage: "url('/images/image.png')" }}
     >
-      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-      <div className="relative z-10 flex h-full items-center justify-start px-8">
-        {/* Left Content */}
-        <div className="text-white max-w-md ml-8">
-          <h1 className="text-4xl font-bold mb-4">COMPANY NAME</h1>
-          <p className="text-lg">QUOTE----</p>
+      {/* Black tint overlay */}
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+
+      <div className="flex items-center justify-center h-full p-8 relative z-10 gap-20">
+        {/* Left Section: Description & Company Name */}
+        <div className="w-full md:w-2/3 lg:w-1/2 text-white mt-80">
+          {/* Container for description */}
+          <div className="container mx-auto px-4 py-8 bg-black bg-opacity-60 rounded-lg">
+            <div className="mb-4">
+              <h1 className="text-4xl font-bold">Medtech Mavericks</h1>
+              <p className="text-lg mt-2">
+                Your reliable healthcare partner for a better life. We provide
+                innovative solutions to enhance your health and wellbeing.
+              </p>
+            </div>
+
+            {/* Learn More Button */}
+            <div className="mt-6">
+              <a
+                href="#learn-more"
+                className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition duration-300"
+              >
+                Learn More
+              </a>
+            </div>
+          </div>
         </div>
 
-        {/* Form Container */}
-        <div
-          className="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg p-8 shadow-lg w-1/4 ml-auto mr-28"
-          style={{ backdropFilter: "blur(15px)" }}
-        >
-          {isSignUp ? (
-            // Sign-Up Form
-            <div>
-              <h2 className="text-2xl font-bold mb-6 text-teal-200">SIGN UP</h2>
-              <form className="space-y-4">
-                {/* Name Field */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full px-4 py-2 rounded-md border placeholder-white text-white focus:ring-2 focus:ring-teal-400 focus:outline-none bg-transparent"
-                    placeholder="Enter your name"
-                  />
-                </div>
-
-                {/* Email Field */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-4 py-2 rounded-md border placeholder-white text-white focus:ring-2 focus:ring-teal-400 focus:outline-none bg-transparent"
-                    placeholder="Enter your email"
-                  />
-                </div>
-
-                {/* Password Field */}
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="w-full px-4 py-2 rounded-md border placeholder-white text-white focus:ring-2 focus:ring-teal-400 focus:outline-none bg-transparent"
-                    placeholder="Enter your password"
-                  />
-                </div>
-
-                {/* User Type */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    I am a:
-                  </label>
-                  <div className="flex space-x-4">
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded-md border ${
-                        userType === "Doctor"
-                          ? "bg-teal-500 text-white"
-                          : "bg-transparent text-teal-300"
-                      }`}
-                      onClick={() => setUserType("Doctor")}
-                    >
-                      Doctor
-                    </button>
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded-md border ${
-                        userType === "Patient"
-                          ? "bg-teal-500 text-white"
-                          : "bg-transparent text-teal-300"
-                      }`}
-                      onClick={() => setUserType("Patient")}
-                    >
-                      Patient
-                    </button>
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-md font-bold"
-                >
-                  SIGN UP
-                </button>
-              </form>
-              <p className="text-sm text-gray-300 mt-4">
-                Already have an account?{" "}
-                <button
-                  className="text-teal-500 font-bold hover:underline"
-                  onClick={() => setIsSignUp(false)}
-                >
-                  Log In
-                </button>
-              </p>
+        {/* Right Section: Form */}
+        <div className="w-full md:w-2/3 lg:w-1/4 bg-gray-800 p-8 rounded-lg shadow-lg mt-80">
+          <div className="text-center mb-6">
+            <h1 className="text-white text-3xl">{signState}</h1>
+          </div>
+          <form onSubmit={user_auth}>
+            {signState === "Sign Up" && (
+              <>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  type="text"
+                  placeholder="Your Name"
+                  className="w-full p-3 mb-4 bg-gray-700 text-white placeholder-gray-500 rounded"
+                />
+              </>
+            )}
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Email"
+              className="w-full p-3 mb-4 bg-gray-700 text-white placeholder-gray-500 rounded"
+            />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Password"
+              className="w-full p-3 mb-6 bg-gray-700 text-white placeholder-gray-500 rounded"
+            />
+            <button
+              type="submit"
+              className="w-full p-3 bg-indigo-600 text-white rounded hover:bg-indigo-500"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : signState}
+            </button>
+          </form>
+          <div className="mt-6 text-center">
+            <div className="flex justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <input type="checkbox" />
+                <label className="text-white">Remember Me</label>
+              </div>
+              <p className="text-blue-500">Need Help?</p>
             </div>
-          ) : (
-            // Login Form
-            <div>
-              <h2 className="text-2xl font-bold mb-6 text-teal-200">LOGIN</h2>
-              <form className="space-y-4" onSubmit={handleLogin}>
-                {/* Email Field */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 rounded-md border placeholder-white text-white focus:ring-2 focus:ring-teal-400 focus:outline-none bg-transparent"
-                    placeholder="Enter your email"
-                  />
-                </div>
-
-                {/* Password Field */}
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium"
+            <div className="text-white">
+              {signState === "Sign In" ? (
+                <p>
+                  New to the platform?{" "}
+                  <span
+                    onClick={() => setSignState("Sign Up")}
+                    className="text-blue-500 cursor-pointer"
                   >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2 rounded-md border placeholder-white text-white focus:ring-2 focus:ring-teal-400 focus:outline-none bg-transparent"
-                    placeholder="Enter your password"
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-md font-bold"
-                >
-                  LOGIN
-                </button>
-              </form>
-              <p className="text-sm text-gray-200 mt-4">
-                Don’t have an account?{" "}
-                <button
-                  className="text-teal-500 font-bold hover:underline"
-                  onClick={() => setIsSignUp(true)}
-                >
-                  Sign Up
-                </button>
-              </p>
-              <p className="text-sm text-teal-500 font-bold hover:underline mt-2">
-                <a href="#">Forgot Password?</a>
-              </p>
+                    Sign Up Now
+                  </span>
+                </p>
+              ) : (
+                <p>
+                  Already have an account?{" "}
+                  <span
+                    onClick={() => setSignState("Sign In")}
+                    className="text-blue-500 cursor-pointer"
+                  >
+                    Sign In Now
+                  </span>
+                </p>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Hero;
+export default Login;

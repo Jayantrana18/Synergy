@@ -3,7 +3,6 @@ import { useTheme } from "next-themes";
 import DoctorList from "@/components/DoctorList/DoctorList";
 import ChatWindow from "@/components/ChatWindow/ChatWindow";
 import Sidebar from "@/components/SideBar/Sidebar";
-import { FaUserCircle, FaMoon, FaSun } from "react-icons/fa";
 
 const Messages = () => {
   const doctors = [
@@ -16,8 +15,8 @@ const Messages = () => {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
     []
   );
-  const [inputValue, setInputValue] = useState(""); // Input field value
-  const [isTyping, setIsTyping] = useState(false); // To show AI typing indicator
+  const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const { theme, setTheme } = useTheme();
 
   // Toggle theme function
@@ -101,29 +100,6 @@ const Messages = () => {
 
       {/* Main Content */}
       <div className="flex flex-col flex-grow">
-        {/* Header */}
-        <div
-          className={`flex justify-between items-center p-4 ${
-            theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
-          } shadow-md`}
-        >
-          <h2 className="text-4xl font-bold">MESSAGES</h2>
-          <div className="flex space-x-4">
-            <FaUserCircle className="text-3xl cursor-pointer" />
-            {theme === "dark" ? (
-              <FaSun
-                className="text-3xl cursor-pointer"
-                onClick={toggleTheme}
-              />
-            ) : (
-              <FaMoon
-                className="text-3xl cursor-pointer"
-                onClick={toggleTheme}
-              />
-            )}
-          </div>
-        </div>
-
         {/* Content */}
         <div className="flex flex-grow">
           {/* Doctor List */}

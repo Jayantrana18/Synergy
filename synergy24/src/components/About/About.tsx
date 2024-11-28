@@ -1,31 +1,43 @@
 import React from "react";
+import Image from "next/image";
 
 const AboutUs = () => {
   return (
-    <div className="relative h-[90vh] bg-gradient-to-b from-teal-50 via-teal-100 to-white flex items-center justify-center px-8">
-      <div className="flex items-center max-w-5xl w-full space-x-12">
+    <div className="relative min-h-[80vh] bg-[#f8fafc] flex items-center justify-center px-6 py-16">
+      {/* Content Section */}
+      <div className="relative z-10 flex flex-wrap items-center justify-between max-w-7xl w-full bg-white shadow-xl p-12 rounded-3xl">
         {/* Image Section */}
-        <div className="relative w-1/3">
-          <div className="absolute -inset-1 bg-white rounded-lg"></div>
-          <div
-            className="relative bg-teal-300 rounded-lg shadow-lg p-8 flex items-center justify-center"
-            style={{ height: "100%" }}
-          >
-            <p className="text-center font-bold text-white text-lg">IMAGE</p>
+        <div className="h-[40vh] w-full md:w-1/2 flex justify-center mb-8 md:mb-0">
+          <div className="relative w-72 h-72 rounded-xl overflow-hidden bg-gray-200 shadow-lg">
+            <Image
+              src="/images/about.webp" // Replace with your actual image path
+              alt="About Us"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-xl"
+            />
           </div>
         </div>
 
         {/* Text Section */}
-        <div className="flex-1">
-          <h2 className="text-4xl font-bold text-teal-700 mb-6">ABOUT US</h2>
-          <p className="text-gray-700 mb-8 leading-relaxed">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit ut et massa
-            mi. Aliquam in hendrerit. Pellentesque sit amet sapien ligula,
-            mattis ligula consectetur, ultrices mauris. Maecenas.
+        <div className="w-full md:w-1/2 md:pl-12 flex flex-col justify-center">
+          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">
+            About Us
+          </h2>
+          <p className="text-lg text-gray-600 leading-relaxed mb-8">
+            At MedTech Mavericks, we revolutionize healthcare by combining
+            advanced technology with genuine care. Our mission is to empower
+            individuals with the tools and knowledge they need for a healthier
+            tomorrow.
           </p>
-          <button className="px-6 py-3 bg-teal-500 text-white font-bold rounded-lg shadow-md hover:bg-teal-600 transition">
-            LEARN MORE
-          </button>
+          <div className="flex space-x-4">
+            <button className="px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
+              Learn More
+            </button>
+            <button className="px-6 py-3 border-2 border-teal-600 text-teal-600 font-semibold rounded-lg shadow-md hover:bg-teal-600 hover:text-white transform transition-transform duration-300 hover:scale-105">
+              Contact Us
+            </button>
+          </div>
         </div>
       </div>
     </div>

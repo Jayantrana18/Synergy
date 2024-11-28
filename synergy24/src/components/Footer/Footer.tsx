@@ -17,36 +17,42 @@ const Footer = () => {
 
   return (
     <footer
-      className={`relative px-12 py-12 ${
-        theme === "dark"
-          ? "bg-blue-100 text-blue-700"
-          : "bg-blue-700 text-white"
-      }`}
+      className={`relative px-8 py-16 ${
+        theme === "dark" ? "bg-blue-900 text-white" : "bg-[#1E3A8A] text-white"
+      } shadow-xl `}
     >
-      <div className="container mx-auto flex flex-wrap justify-between space-y-8 md:space-y-0 ml-4">
+      <div className="absolute inset-0 bg-[url('/cool-pattern.svg')] bg-no-repeat bg-cover opacity-20"></div>
+      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
         {/* Logo */}
-        <div className="flex flex-col items-start">
-          <span className="text-gray-950 text-3xl font-bold">
+        <div className="flex flex-col items-start space-y-4">
+          <span className="text-4xl font-extrabold text-blue-300">
             MedTech Mavericks
           </span>
+          <p className="text-gray-200 text-sm max-w-xs">
+            Leading innovation in medical technology, empowering healthcare with
+            cutting-edge solutions.
+          </p>
         </div>
 
         {/* Quick Links */}
-        <div className="pl-6">
-          <h3 className="text-2xl font-semibold mb-4">Quick Links</h3>
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-200">Quick Links</h3>
           <nav className="flex flex-col space-y-2">
-            <Link href="/about" className="hover:underline hover:text-blue-600">
+            <Link
+              href="/about"
+              className="hover:underline text-gray-200 hover:text-blue-400"
+            >
               About
             </Link>
             <Link
               href="/services"
-              className="hover:underline hover:text-blue-600"
+              className="hover:underline text-gray-200 hover:text-blue-400"
             >
               Services
             </Link>
             <Link
               href="/contact"
-              className="hover:underline hover:text-blue-600"
+              className="hover:underline text-gray-200 hover:text-blue-400"
             >
               Contact Us
             </Link>
@@ -54,14 +60,14 @@ const Footer = () => {
         </div>
 
         {/* Contact Information */}
-        <div className="pl-6">
-          <h3 className="text-2xl font-semibold mb-4">Contact Us</h3>
-          <address className="not-italic space-y-2">
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-200">Contact Us</h3>
+          <address className="not-italic space-y-2 text-gray-200">
             <p>
               Email:{" "}
               <a
                 href="mailto:info@medtechmavericks.com"
-                className="hover:underline hover:text-blue-600"
+                className="hover:underline text-gray-100 hover:text-blue-400"
               >
                 info@medtechmavericks.com
               </a>
@@ -70,7 +76,7 @@ const Footer = () => {
               Phone:{" "}
               <a
                 href="tel:+1234567890"
-                className="hover:underline hover:text-blue-600"
+                className="hover:underline text-gray-100 hover:text-blue-400"
               >
                 +1 (234) 567-890
               </a>
@@ -79,67 +85,51 @@ const Footer = () => {
         </div>
 
         {/* Social Media Links */}
-        <div className="border-l border-blue-400 pl-6">
-          <h3 className="text-2xl font-semibold mb-4">Follow Us</h3>
-          <div className="flex space-x-4">
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-200">Follow Us</h3>
+          <div className="flex space-x-6">
             <a
               href="https://facebook.com"
               aria-label="Facebook"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
-              <FacebookIcon
-                className={`w-8 h-8 ${
-                  theme === "dark"
-                    ? "hover:text-blue-400"
-                    : "hover:text-blue-500"
-                } transition-colors`}
-              />
+              <FacebookIcon className="w-8 h-8" />
             </a>
             <a
               href="https://twitter.com"
               aria-label="Twitter"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
-              <TwitterIcon
-                className={`w-8 h-8 ${
-                  theme === "dark"
-                    ? "hover:text-blue-400"
-                    : "hover:text-blue-500"
-                } transition-colors`}
-              />
+              <TwitterIcon className="w-8 h-8" />
             </a>
             <a
               href="https://instagram.com"
               aria-label="Instagram"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
-              <InstagramIcon
-                className={`w-8 h-8 ${
-                  theme === "dark"
-                    ? "hover:text-blue-400"
-                    : "hover:text-blue-500"
-                } transition-colors`}
-              />
+              <InstagramIcon className="w-8 h-8" />
             </a>
             <a
               href="https://linkedin.com"
               aria-label="LinkedIn"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-blue-400 transition-all duration-300 transform hover:scale-125"
             >
-              <LinkedinIcon
-                className={`w-8 h-8 ${
-                  theme === "dark"
-                    ? "hover:text-blue-400"
-                    : "hover:text-blue-500"
-                } transition-colors`}
-              />
+              <LinkedinIcon className="w-8 h-8" />
             </a>
           </div>
         </div>
+      </div>
+      <div className="mt-8 text-center text-gray-400 text-sm relative z-10">
+        &copy; {new Date().getFullYear()} MedTech Mavericks. All rights
+        reserved.
       </div>
     </footer>
   );

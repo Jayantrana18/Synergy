@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/SideBar/Sidebar";
 import Booking from "@/components/Booking/Booking"; // Ensure this file exists
-import { FaUserCircle, FaMoon } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaMoon,
+  FaCalendarAlt,
+  FaClock,
+  FaUser,
+} from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
+import { motion } from "framer-motion"; // Import framer-motion for animations
 
 const AppointmentPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,25 +34,21 @@ const AppointmentPage = () => {
       name: "Dr. Smith",
       specialty: "Cardiology",
       availability: "9 AM - 5 PM",
-      image: "/images/doctor1.jpg",
     },
     {
       name: "Dr. Johnson",
       specialty: "Dermatology",
       availability: "10 AM - 4 PM",
-      image: "/images/doctor2.jpg",
     },
     {
       name: "Dr. Brown",
       specialty: "Neurology",
       availability: "1 PM - 6 PM",
-      image: "/images/doctor3.jpg",
     },
     {
       name: "Dr. Davis",
       specialty: "Pediatrics",
       availability: "8 AM - 3 PM",
-      image: "/images/doctor4.jpg",
     },
   ];
 
@@ -53,7 +56,6 @@ const AppointmentPage = () => {
     name: string;
     specialty: string;
     availability: string;
-    image: string;
   }) => {
     setSelectedDoctor(doctor);
     setModalOpen(true);
@@ -102,30 +104,31 @@ const AppointmentPage = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-4xl font-bold">APPOINTMENTS</h2>
-          <div className="flex space-x-4">
-            {/* User and Theme Icons */}
-            <FaUserCircle className="text-3xl cursor-pointer" />
-            <FaMoon className="text-3xl cursor-pointer" onClick={toggleTheme} />
-          </div>
         </div>
 
         {/* Appointment Details List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {doctors.map((doctor) => (
-            <div
+            <motion.div
               key={doctor.name}
-              className={`flex flex-col items-center justify-between ${bgCard} rounded-lg p-4 shadow-lg transition duration-300`}
+              className={`flex flex-col items-center justify-between ${bgCard} rounded-lg p-6 shadow-lg transition duration-300 transform hover:scale-105`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <img
-                src={doctor.image}
-                alt={doctor.name}
-                className="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-md mb-4"
+              {/* User Icon Instead of Doctor Image */}
+              <FaUser
+                size={100}
+                className="text-blue-500 mb-4" // Icon size and color
               />
               <h3 className={`font-bold text-lg text-center ${cardTextColor}`}>
                 {doctor.name}
               </h3>
-              <p className={`text-sm ${cardTextColor}`}>{doctor.specialty}</p>
               <p className={`text-sm ${cardTextColor}`}>
+                <FaUserCircle className="inline mr-1" />
+                {doctor.specialty}
+              </p>
+              <p className={`text-sm ${cardTextColor}`}>
+                <FaCalendarAlt className="inline mr-1" />
                 {doctor.availability}
               </p>
               <button
@@ -134,7 +137,7 @@ const AppointmentPage = () => {
               >
                 Book Now
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
       </main>

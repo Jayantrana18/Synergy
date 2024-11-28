@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Sidebar from "@/components/SideBar/Sidebar";
 import ProductGrid from "@/components/ProductGrid/ProductGrid";
 import CartModal from "@/components/CartModal/CartModal";
-import { FaShoppingCart, FaUserCircle, FaMoon, FaSun } from "react-icons/fa";
+import { FaShoppingCart, FaMoon, FaSun } from "react-icons/fa";
 import { useTheme } from "next-themes";
 
 const Store = () => {
@@ -82,7 +82,6 @@ const Store = () => {
 
   const isDarkMode = theme === "dark";
   const textColor = isDarkMode ? "text-white" : "text-black";
-  const bgSidebar = isDarkMode ? "bg-gray-800" : "bg-blue-200";
 
   return (
     <div
@@ -94,7 +93,7 @@ const Store = () => {
       <Sidebar
         toggleTheme={toggleTheme}
         textColor={textColor}
-        bgSidebar={bgSidebar}
+        bgSidebar={isDarkMode ? "bg-gray-800" : "bg-blue-200"}
         handleSignOut={() => {
           /* Your sign-out logic here */
         }}
@@ -105,18 +104,6 @@ const Store = () => {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-4xl font-bold">STORE</h2>
           <div className="flex space-x-4">
-            <FaUserCircle className="text-3xl cursor-pointer" />
-            {theme === "dark" ? (
-              <FaSun
-                className="text-3xl cursor-pointer"
-                onClick={toggleTheme}
-              />
-            ) : (
-              <FaMoon
-                className="text-3xl cursor-pointer"
-                onClick={toggleTheme}
-              />
-            )}
             <FaShoppingCart
               className="text-3xl cursor-pointer"
               onClick={() => setCartOpen(true)}
@@ -140,6 +127,7 @@ const Store = () => {
             )
           )}
         </div>
+
         {/* Product Grid */}
         <ProductGrid
           products={filteredProducts()}
