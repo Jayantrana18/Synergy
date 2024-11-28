@@ -29,9 +29,7 @@ const Dashboard = () => {
 
   // Sample patient data
   const patient = {
-    name: "John Doe",
-    age: 45,
-    gender: "Male",
+    name: "User Details",
     healthStats: {
       bloodPressure: "Calculating...",
     },
@@ -54,15 +52,6 @@ const Dashboard = () => {
         {/* Patient Info Section */}
         <div className={`bg-card ${textColor} rounded-lg p-6 mb-6 shadow-md`}>
           <h3 className="text-2xl font-bold mb-4">{patient.name}</h3>
-          <p>
-            <strong>Age:</strong> {patient.age}
-          </p>
-          <p>
-            <strong>Gender:</strong> {patient.gender}
-          </p>
-          <p>
-            <strong>Blood Pressure:</strong> {patient.healthStats.bloodPressure}
-          </p>
         </div>
 
         {/* Health Stats Section with iFrames */}

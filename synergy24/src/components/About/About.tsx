@@ -34,9 +34,6 @@ const AboutUs = () => {
             <button className="px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
               Learn More
             </button>
-            <button className="px-6 py-3 border-2 border-teal-600 text-teal-600 font-semibold rounded-lg shadow-md hover:bg-teal-600 hover:text-white transform transition-transform duration-300 hover:scale-105">
-              Contact Us
-            </button>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import { login, singup } from "../../firebase";
 
 const Login = () => {
@@ -8,7 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState<string | null>(null);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   const user_auth = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -21,6 +20,10 @@ const Login = () => {
     setLoading(false);
   };
 
+  const toggleHelpModal = () => {
+    setShowHelpModal(!showHelpModal);
+  };
+
   return (
     <div
       className="relative min-h-screen bg-cover bg-center"
@@ -29,20 +32,19 @@ const Login = () => {
       {/* Black tint overlay */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      <div className="flex items-center justify-center h-full p-8 relative z-10 gap-20">
+      <div className="flex items-center justify-center h-full p-8 relative z-10 gap-12 md:gap-20 flex-col lg:flex-row">
         {/* Left Section: Description & Company Name */}
-        <div className="w-full md:w-2/3 lg:w-1/2 text-white mt-80">
-          {/* Container for description */}
-          <div className="container mx-auto px-4 py-8 bg-black bg-opacity-60 rounded-lg">
+        <div className="w-full md:w-2/3 lg:w-1/2 text-white">
+          <div className="container mx-auto px-4 py-8 bg-black bg-opacity-60 rounded-lg mt-32 md:mt-96">
             <div className="mb-4">
-              <h1 className="text-4xl font-bold">Medtech Mavericks</h1>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Medtech Mavericks
+              </h1>
               <p className="text-lg mt-2">
                 Your reliable healthcare partner for a better life. We provide
                 innovative solutions to enhance your health and wellbeing.
               </p>
             </div>
-
-            {/* Learn More Button */}
             <div className="mt-6">
               <a
                 href="#learn-more"
@@ -55,21 +57,19 @@ const Login = () => {
         </div>
 
         {/* Right Section: Form */}
-        <div className="w-full md:w-2/3 lg:w-1/4 bg-gray-800 p-8 rounded-lg shadow-lg mt-80">
+        <div className="w-full md:w-2/3 lg:w-1/4 bg-gray-800 p-8 rounded-lg shadow-lg md:mt-64 mt-0">
           <div className="text-center mb-6">
             <h1 className="text-white text-3xl">{signState}</h1>
           </div>
           <form onSubmit={user_auth}>
             {signState === "Sign Up" && (
-              <>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full p-3 mb-4 bg-gray-700 text-white placeholder-gray-500 rounded"
-                />
-              </>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Your Name"
+                className="w-full p-3 mb-4 bg-gray-700 text-white placeholder-gray-500 rounded"
+              />
             )}
             <input
               value={email}
@@ -99,7 +99,12 @@ const Login = () => {
                 <input type="checkbox" />
                 <label className="text-white">Remember Me</label>
               </div>
-              <p className="text-blue-500">Need Help?</p>
+              <p
+                onClick={toggleHelpModal}
+                className="text-blue-500 cursor-pointer"
+              >
+                Need Help?
+              </p>
             </div>
             <div className="text-white">
               {signState === "Sign In" ? (
@@ -127,6 +132,31 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Help Modal */}
+      {showHelpModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-20">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-2xl font-semibold mb-4 text-blue-600">
+              Need Help?
+            </h2>
+            <p className="mb-4 text-black">
+              For assistance with patient login, please contact our support
+              team:
+            </p>
+            <ul className="mb-4 text-black">
+              <li>Email: support@medtechmavericks.com</li>
+              <li>Phone: +1 (123) 456-7890</li>
+            </ul>
+            <button
+              onClick={toggleHelpModal}
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

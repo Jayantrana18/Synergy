@@ -14,31 +14,34 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const noLayoutRoutes = [
-    "/patients",
-    "/login",
-    "/appointment",
-    "/store",
-    "/messages",
-  ];
-  const hideLayout = noLayoutRoutes.includes(router.pathname);
+  // Define routes that should be protected and require authentication
+  const protectedRoutes = ["/patients", "/appointment", "/store", "/messages"];
+  const publicRoutes = ["/services", "/aboutus"]; // Allow these routes for all users
 
-  // Handle authentication state change
+  const hideLayout = protectedRoutes.includes(router.pathname);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setLoading(false);
+
+      // If the user is logged in and on a protected route, keep them there
       if (user) {
         console.log("Logged In");
-        setLoading(false);
-        // Redirect if already logged in (if needed)
-        if (router.pathname === "/login") {
-          router.push("/"); // Redirect to home if logged in
+        // Redirect to '/patients' or the desired page if they are logged in
+        if (
+          !protectedRoutes.includes(router.pathname) &&
+          !publicRoutes.includes(router.pathname)
+        ) {
+          router.push("/patients");
         }
       } else {
         console.log("Logged Out");
-        setLoading(false);
-        // Redirect to login page if logged out
-        if (router.pathname !== "/login") {
-          router.push("/login");
+        // Redirect unauthenticated users to the home page unless they are on a public route
+        if (
+          !publicRoutes.includes(router.pathname) &&
+          router.pathname !== "/"
+        ) {
+          router.push("/");
         }
       }
     });

@@ -11,6 +11,7 @@ import {
   FiMenu,
   FiX,
 } from "react-icons/fi";
+import { logout } from "../../firebase"; // Ensure the logout function is imported
 
 interface SidebarProps {
   textColor: string;
@@ -26,22 +27,29 @@ const Sidebar: React.FC<SidebarProps> = ({
   toggleTheme,
 }) => {
   const [activeLink, setActiveLink] = useState<string>("");
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false); // State for mobile sidebar toggle
+  const [showHelpPopup, setShowHelpPopup] = useState<boolean>(false); // State for Help popup
+  const [showUpdatesPopup, setShowUpdatesPopup] = useState<boolean>(false); // State for Updates popup
   const router = useRouter();
 
   useEffect(() => {
-    setActiveLink(router.asPath);
+    setActiveLink(router.asPath); // Updates active link when route changes
   }, [router.asPath]);
 
   const handleLinkClick = (link: string) => {
-    setActiveLink(link);
-    router.push(link);
+    setActiveLink(link); // Update active link
+    router.push(link); // Navigate to the clicked link
   };
 
-  const handleSignOutRedirect = () => {
-    handleSignOut(); // Call the passed handleSignOut function if necessary
-    router.push("/"); // Redirect to the home page
+  const handleLogout = async () => {
+    await logout(); // Call the logout function
+    router.push("/"); // Redirect to home page after logout
+  };
+
+  // Function to close any open popups
+  const closePopups = () => {
+    setShowHelpPopup(false);
+    setShowUpdatesPopup(false);
   };
 
   return (
@@ -107,44 +115,18 @@ const Sidebar: React.FC<SidebarProps> = ({
               <FiShoppingBag className="text-2xl" />
               Store
             </a>
-            <div>
-              <button
-                onClick={() => setIsChatOpen(!isChatOpen)}
-                className={`flex items-center justify-between w-full gap-4 p-2 rounded-lg text-lg cursor-pointer transition ${
-                  isChatOpen
-                    ? "bg-gray-200"
-                    : "hover:bg-gray-200 dark:hover:text-black"
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <FiMessageSquare className="text-2xl" />
-                  Chat
-                </div>
-                <span>{isChatOpen ? "-" : "+"}</span>
-              </button>
-              {isChatOpen && (
-                <div className="pl-8 mt-2 space-y-2 text-gray-600">
-                  <a
-                    onClick={() => handleLinkClick("/chat/prompt-craft")}
-                    className="block text-sm hover:text-blue-600 dark:hover:text-black cursor-pointer"
-                  >
-                    Prompt Craft
-                  </a>
-                  <a
-                    onClick={() => handleLinkClick("/chat/daily-theme")}
-                    className="block text-sm hover:text-blue-600 dark:hover:text-black cursor-pointer"
-                  >
-                    Daily Theme
-                  </a>
-                  <a
-                    onClick={() => handleLinkClick("/chat/newbies")}
-                    className="block text-sm hover:text-blue-600 dark:hover:text-black cursor-pointer"
-                  >
-                    Newbies
-                  </a>
-                </div>
-              )}
-            </div>
+            {/* Chat Link */}
+            <a
+              onClick={() => handleLinkClick("/messages")}
+              className={`flex items-center gap-4 p-2 rounded-lg text-lg cursor-pointer transition ${
+                activeLink === "/messages"
+                  ? "bg-blue-600 text-white shadow-lg"
+                  : "hover:bg-gray-200 dark:hover:text-black"
+              }`}
+            >
+              <FiMessageSquare className="text-2xl" />
+              Chat
+            </a>
             <a
               onClick={() => handleLinkClick("/appointment")}
               className={`flex items-center gap-4 p-2 rounded-lg text-lg cursor-pointer transition ${
@@ -168,38 +150,83 @@ const Sidebar: React.FC<SidebarProps> = ({
             <FiMoon className="text-2xl" />
             Dark Mode
           </button>
-          <a className="flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:text-black transition">
+          <button
+            onClick={() => setShowHelpPopup(true)}
+            className="flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:text-black transition"
+          >
             <FiHelpCircle className="text-2xl" />
             Help
-          </a>
-          <a className="flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:text-black transition">
+          </button>
+          <button
+            onClick={() => setShowUpdatesPopup(true)}
+            className="flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:text-black transition"
+          >
             <FiBell className="text-2xl" />
             Updates
-          </a>
-
-          {/* Profile Section */}
-          <div className="flex items-center gap-4 mb-4">
-            <img
-              src="/images/profile.jpg" // Replace with actual profile picture URL
-              alt="Profile"
-              className="w-10 h-10 rounded-full"
-            />
-            <div>
-              <p className="text-lg font-semibold">John Doe</p>{" "}
-              {/* Replace with user's name */}
-              <p className="text-sm text-gray-500">Admin</p>{" "}
-              {/* Replace with user's role if needed */}
-            </div>
-          </div>
+          </button>
 
           <button
-            onClick={handleSignOutRedirect} // Updated to redirect on sign-out
+            onClick={handleLogout} // Calls the logout function
             className="w-full bg-red-500 text-white py-2 rounded-lg text-lg hover:bg-red-600 transition"
           >
             Sign Out
           </button>
         </div>
       </aside>
+
+      {/* Overlay for Background Darkening */}
+      {(showHelpPopup || showUpdatesPopup) && (
+        <div className="fixed inset-0 bg-black opacity-50 z-40" />
+      )}
+
+      {/* Help Popup */}
+      {showHelpPopup && (
+        <div
+          className={`fixed inset-0 z-50 ${bgSidebar} ${textColor} flex justify-center items-center`}
+        >
+          <div
+            className={`relative ${bgSidebar} rounded-lg p-6 shadow-lg max-w-lg w-full`}
+          >
+            <h3 className="text-2xl font-bold text-center mb-4">Help</h3>
+            <p className="text-lg mb-4">
+              This sidebar contains navigation links to various sections of the
+              app:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Patients: View and manage patient information.</li>
+              <li>Store: Browse and purchase medical products.</li>
+              <li>Chat: Communicate with medical professionals and support.</li>
+              <li>Appointments: Schedule or view upcoming appointments.</li>
+            </ul>
+            <button
+              onClick={closePopups}
+              className={`mt-4 px-6 py-2 ${bgSidebar} rounded-full text-sm font-bold uppercase shadow-md`}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Updates Popup */}
+      {showUpdatesPopup && (
+        <div
+          className={`fixed inset-0 z-50 ${bgSidebar} ${textColor} flex justify-center items-center`}
+        >
+          <div
+            className={`relative ${bgSidebar} rounded-lg p-6 shadow-lg max-w-lg w-full`}
+          >
+            <h3 className="text-2xl font-bold text-center mb-4">Updates</h3>
+            <p className="text-lg mb-4">No new notifications at the moment.</p>
+            <button
+              onClick={closePopups}
+              className={`mt-4 px-6 py-2 ${bgSidebar} rounded-full text-sm font-bold uppercase shadow-md`}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

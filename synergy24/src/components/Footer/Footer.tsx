@@ -39,7 +39,7 @@ const Footer = () => {
           <h3 className="text-xl font-semibold text-gray-200">Quick Links</h3>
           <nav className="flex flex-col space-y-2">
             <Link
-              href="/about"
+              href="/aboutus"
               className="hover:underline text-gray-200 hover:text-blue-400"
             >
               About
@@ -49,12 +49,6 @@ const Footer = () => {
               className="hover:underline text-gray-200 hover:text-blue-400"
             >
               Services
-            </Link>
-            <Link
-              href="/contact"
-              className="hover:underline text-gray-200 hover:text-blue-400"
-            >
-              Contact Us
             </Link>
           </nav>
         </div>
@@ -75,10 +69,10 @@ const Footer = () => {
             <p>
               Phone:{" "}
               <a
-                href="tel:+1234567890"
+                href="tel:+91 95298 50859"
                 className="hover:underline text-gray-100 hover:text-blue-400"
               >
-                +1 (234) 567-890
+                +91 95298 50859
               </a>
             </p>
           </address>

@@ -1,7 +1,19 @@
-import React from "react";
-import { CalendarIcon, ShieldCheckIcon, StarIcon } from "lucide-react";
+import React, { useState } from "react";
+import {
+  CalendarIcon,
+  ShieldCheckIcon,
+  StarIcon,
+  MessageCircleIcon,
+  BellIcon,
+} from "lucide-react";
+import Link from "next/link";
 
 const AppointmentsAndReasons = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <div className="bg-gradient-to-b from-teal-50 to-teal-100 py-24 px-8">
       {/* First Section */}
@@ -25,11 +37,43 @@ const AppointmentsAndReasons = () => {
             you with personalized care and innovative medical solutions. Book
             your appointment today and experience the best in healthcare.
           </p>
-          <button className="inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold rounded-full shadow-lg hover:from-teal-600 hover:to-teal-700 hover:shadow-xl transition-transform duration-300 transform hover:scale-105">
+          <button
+            onClick={openModal} // Open the modal when clicked
+            className="inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold rounded-full shadow-lg hover:from-teal-600 hover:to-teal-700 hover:shadow-xl transition-transform duration-300 transform hover:scale-105"
+          >
             Get Appointment &rarr;
           </button>
         </div>
       </div>
+
+      {/* Modal for Sign In */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-8 max-w-sm mx-auto">
+            <h2 className="text-xl font-bold text-teal-700 mb-4">
+              Sign In to Continue
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Please sign in to book your appointment and access our services.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Link
+                onClick={closeModal}
+                href="/" // Replace with actual sign-in route
+                className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+              >
+                Sign In
+              </Link>
+              <button
+                onClick={closeModal} // Close modal when clicked
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Second Section */}
       <div className="max-w-7xl mx-auto">
@@ -74,6 +118,8 @@ const AppointmentsAndReasons = () => {
           </div>
         </div>
       </div>
+
+      {/* Services Section */}
     </div>
   );
 };

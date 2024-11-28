@@ -4,6 +4,7 @@ import Link from "next/link";
 export function Header() {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control the popup visibility
 
   useEffect(() => {
     setMounted(true);
@@ -11,6 +12,14 @@ export function Header() {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleAppointmentClick = () => {
+    setIsPopupOpen(true); // Open the sign-in popup when Appointment button is clicked
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false); // Close the popup
   };
 
   if (!mounted) {
@@ -37,7 +46,7 @@ export function Header() {
           } md:flex`}
         >
           <Link
-            href="/about"
+            href="/aboutus"
             className="text-lg font-medium text-gray-800 hover:text-blue-600 transition duration-300 ease-in-out"
           >
             About
@@ -48,13 +57,10 @@ export function Header() {
           >
             Services
           </Link>
-          <Link
-            href="/contact"
-            className="text-lg font-medium text-gray-800 hover:text-blue-600 transition duration-300 ease-in-out"
+          <button
+            onClick={handleAppointmentClick} // Open the popup on Appointment click
+            className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 shadow-lg transition duration-300 ease-in-out"
           >
-            Contact Us
-          </Link>
-          <button className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 shadow-lg transition duration-300 ease-in-out">
             Appointment
           </button>
         </nav>
@@ -127,7 +133,7 @@ export function Header() {
           </button>
 
           <Link
-            href="/about"
+            href="/aboutus"
             className="text-lg font-medium text-gray-800 hover:text-blue-600 py-4"
             onClick={toggleMenu} // Close menu when clicked
           >
@@ -140,21 +146,43 @@ export function Header() {
           >
             Services
           </Link>
-          <Link
-            href="/contact"
-            className="text-lg font-medium text-gray-800 hover:text-blue-600 py-4"
-            onClick={toggleMenu} // Close menu when clicked
-          >
-            Contact Us
-          </Link>
           <button
-            onClick={toggleMenu} // Close menu when clicked
+            onClick={handleAppointmentClick} // Open the popup on Appointment click
             className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 shadow-lg transition duration-300 ease-in-out mt-6"
           >
             Appointment
           </button>
         </div>
       </div>
+
+      {/* Sign-in Popup */}
+      {isPopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full text-center">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Please Sign In to Continue
+            </h2>
+            <p className="text-gray-600 mb-4">
+              You need to sign in to book an appointment.
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={closePopup}
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+              >
+                Close
+              </button>
+              <Link
+                onClick={closePopup}
+                href="/"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Sign In
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
